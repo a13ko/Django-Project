@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from flixgo.volkovdesign.com/main/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Mar 2023 09:50:15 GMT -->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/static/assets/css/bootstrap-reboot.min.css">
+	<link rel="stylesheet" href="/static/assets/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="/static/assets/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/static/assets/css/jquery.mCustomScrollbar.min.css">
+	<link rel="stylesheet" href="/static/assets/css/nouislider.min.css">
+	<link rel="stylesheet" href="/static/assets/css/plyr.css">
+	<link rel="stylesheet" href="/static/assets/css/photoswipe.css">
+	<link rel="stylesheet" href="/static/assets/css/default-skin.css">
+	<link rel="stylesheet" href="/static/assets/css/main.css">
+
+	<!-- Favicons -->
+	<link rel="icon" type="image/png" href="/static/assets/icon/favicon-32x32.png" sizes="32x32">
+	<link rel="apple-touch-icon" href="/static/assets/icon/favicon-32x32.png">
+
+	<meta name="description" content="Online Movies, TV Shows & Cinema HTML Template">
+	<meta name="keywords" content="">
+	<meta name="author" content="Dmitry Volkov">
+	<title>FlixGo – Online Movies, TV Shows & Cinema HTML Template</title>
+
+</head>
+<body class="body">
+
+<div class="sign section--bg" data-bg="/static/assets/img/section/section.jpg">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="sign__content">
+					<!-- authorization form -->
+					<form method="POST" class="sign__form">
+						{% csrf_token %}
+						<a href="index.html" class="sign__logo">
+							<img src="/static/assets/img/logo.svg" alt="">
+						</a>
+
+						<div class="sign__group">
+							{% if form.activation_code.errors %}
+								{% for error  in form.activation_code.errors %}
+								<li style='color:red;'>
+									{{error|escape}}
+								</li>
+								{% endfor %}
+							{% endif %}
+
+							{{form.activation_code}}
+						</div>
+
+						<div class="sign__group sign__group--checkbox">
+							<input id="remember" name="remember" type="checkbox" checked="checked">
+							<label for="remember">Remember Me</label>
+						</div>
+						
+						<button class="sign__btn" type="submit">Sign in</button>
+
+						<span class="sign__text">Don't have an account? <a href="signup.html">Sign up!</a></span>
+
+						<span class="sign__text"><a href="forgot.html">Forgot password?</a></span>
+					</form>
+					<!-- end authorization form -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JS -->
+<script src="/static/assets/js/jquery-3.6.0.min.js"></script>
+<script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/static/assets/js/owl.carousel.min.js"></script>
+<script src="/static/assets/js/jquery.mousewheel.min.js"></script>
+<script src="/static/assets/js/jquery.mCustomScrollbar.min.js"></script>
+<script src="/static/assets/js/wNumb.js"></script>
+<script src="/static/assets/js/nouislider.min.js"></script>
+<script src="/static/assets/js/plyr.min.js"></script>
+<script src="/static/assets/js/jquery.morelines.min.js"></script>
+<script src="/static/assets/js/photoswipe.min.js"></script>
+<script src="/static/assets/js/photoswipe-ui-default.min.js"></script>
+<script src="/static/assets/js/main.js"></script>
+</body>
+
+<!-- Mirrored from flixgo.volkovdesign.com/main/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Mar 2023 09:50:15 GMT -->
+</html>

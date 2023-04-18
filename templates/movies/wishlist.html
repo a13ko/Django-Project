@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="/static/assets/img/section/section.jpg">
+	{% csrf_token %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="section__wrap">
+					<!-- section title -->
+					<h1 class="section__title">Bəyəndiklərin</h1>
+					<!-- end section title -->
+
+					<!-- breadcrumb -->
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="index.html">Ana Səhifə</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">Bəyəndiklərin</li>
+					</ul>
+					<!-- end breadcrumb -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end page title -->
+
+
+
+<!-- catalog -->
+<div style="margin-top: 80px;" class="catalog">
+	<div class="container">
+		<div class="row row--grid">
+			<div class="col-12">
+				<div class="section__wrap">
+					<!-- section title -->
+					<h1 class="section__title">Bəyəndiyin Filmlər</h1>
+					<!-- end section title -->
+
+					
+				</div>
+			</div>
+			<!-- card -->
+			{% for movie in movies %}
+			<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+				<div class="card">
+					<a href="{% url 'movies:movies-detail' movie.slug %}" class="card__cover">
+						<img src="{{movie.poster.url}}" alt="">
+						<span class="card__play">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/></svg>
+						</span>
+					</a>
+					<div class="card__content">
+						
+						<h3 class="card__title"><a href="#">{{movie.title}}</a></h3>
+						
+					
+						
+						<span class="card__category" style="font-weight: bold;margin-top: -3px;">
+							{% for genre in  movie.genres.all %}
+									<a href="#">{{genre.name}}</a>
+							{% endfor %}
+							
+						</span>
+						
+					<span style="color: rgb(227, 74, 74); font-weight: bolder;" ><span style="color: blueviolet; font-weight: bold;"> IMDb</span> {{movie.imdb}}</span>
+					<span style="color: #753750; font-weight: bold;">{{movie.release_date|date:'Y'}}</span>
+
+					<a onclick="getWish('{{movie.id}}')" class="notifi-wishlist">
+						<i  class="fa fa-heart heart-icon" id="trend-heart-{{movie.id}}"
+						{% if request.user in movie.wishlist.all %} style=color:green; 	
+						{% else %} style=color:red;
+						{% endif %}>
+						</i>
+					</a>
+					
+				  
+				</div>
+
+				</div>
+			</div>
+			{% endfor %}
+			<!-- end card -->
+
+		</div>
+
+
+
+		<div class="row">
+			
+	</div>
+</div>
+
+<!-- end catalog -->
+
+
+
+<!-- catalog -->
+<div style="margin-top: 100px;" class="catalog">
+	<div class="container">
+		<div class="row row--grid">
+			<div class="col-12">
+				<div class="section__wrap">
+					<!-- section title -->
+					<h1 class="section__title">Bəyəndiyin Seriallar</h1>
+					<!-- end section title -->
+			
+					
+				</div>
+			</div>
+			<!-- card -->
+			{% for serie in series %}
+			<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+				<div class="card">
+					<a href="" class="card__cover">
+						<img src="{{serie.poster.url}}" alt="">
+						<span class="card__play">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/></svg>
+						</span>
+					</a>
+					<div class="card__content">
+						
+						<h3 class="card__title"><a href="#">{{serie.title}}</a></h3>
+						
+					
+						
+						<span class="card__category" style="font-weight: bold;margin-top: -3px;">
+							{% for genre in  serie.genres.all %}
+									<a href="#">{{genre.name}}</a>
+							{% endfor %}
+							
+						</span>
+						
+					<span style="color: rgb(227, 74, 74); font-weight: bolder;" ><span style="color: blueviolet; font-weight: bold;"> IMDb</span> {{movie.imdb}}</span>
+					<span style="color: #753750; font-weight: bold;">{{serie.release_date|date:'Y'}}</span>
+
+					<a onclick="getWishd('{{serie.id}}')" class="notifi-wishlist">
+						<i  class="fa fa-heart heart-icon" id="serie-heart-{{serie.id}}"
+						{% if request.user in serie.wishlist.all %} style=color:green; 	
+						{% else %} style=color:red;
+						{% endif %}>
+						</i>
+					</a>
+					
+				  
+				</div>
+
+				</div>
+			</div>
+			{% endfor %}
+			<!-- end card -->
+
+		</div>
+
+
+		<div class="row">
+			
+	</div>
+</div>
+<!-- end catalog -->
+
+
+
+
+
+<!-- expected premiere -->
+<section class="section section--bg" data-bg="/static/assets/img/section/section.jpg">
+	<div class="container">
+		<div class="row">
+			<!-- section title -->
+			<div class="col-12">
+				<h2 class="section__title">Yaxın Zamanda Gələcək Filmlər</h2>
+			</div>
+			<!-- end section title -->
+		</div>
+
+		<div class="row row--grid">
+			<!-- card -->
+			{% for coming_movie in coming_movies  %}
+			<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+				<div class="card">
+					<a href="" style="pointer-events: none" class="card__cover">
+						<img src="{{coming_movie.poster.url}}" alt="">
+						<span class="card__play">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/></svg>
+						</span>
+					</a>
+					<div class="card__content">
+						<h3 class="card__title"><a href="#"style="pointer-events: none">{{coming_movie.title}}</a></h3>
+						<span class="card__category" style="font-weight: bold;">
+							{% for genre in  coming_movie.genres.all %}
+									<a href="#" style="pointer-events: none">{{genre.name}}</a>
+							{% endfor %}
+						</span>
+						<span style="color: #753750; font-weight: bold;">{{coming_movie.release_date|date:'M  Y'}}</span>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<!-- end card -->
+
+			
+
+			<!-- section btn -->
+			<div class="col-12">
+				<a href="#" class="section__btn">Show more</a>
+			</div>
+			<!-- end section btn -->
+		</div>
+	</div>
+</section>
+<!-- end expected premiere -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+	const wishd_url = "{% url 'series:serie-wish' %}"
+        
+		function getWishd(id){
+            var myHeaders = new Headers()
+myHeaders.append('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoken]').value)
+
+    var formData = new FormData()
+
+    formData.append('id', id)
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow',
+    };
+
+    response = fetch(wishd_url, requestOptions)
+        .then(function (response) {
+
+            if (response.ok) {
+                response.json().then((data) => {
+                    if(data.success){
+                        $("#trend-heart-"+id).css('color', 'red')
+                    }else{
+                        $("#trend-heart-"+id).css('color', 'green')
+                    }
+                    location.reload(); // Yenileme işlemi
+                })
+            }
+        })
+}	
+
+	const wish_url = "{% url 'movies:movie-wish' %}"
+	
+        
+		function getWish(id){
+    var myHeaders = new Headers()
+    myHeaders.append('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoken]').value)
+    var formData = new FormData()
+
+    formData.append('id', id)
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow',
+    };
+
+    response = fetch(wish_url, requestOptions)
+        .then(function (response) {
+
+            if (response.ok) {
+                response.json().then((data) => {
+                    if(data.success){
+                        $("#trend-heart-"+id).css('color', 'red')
+                    }else{
+                        $("#trend-heart-"+id).css('color', 'green')
+                    }
+                    location.reload(); // Yenileme işlemi
+                })
+            }
+        })
+}	
+</script>
+{% endblock  %}

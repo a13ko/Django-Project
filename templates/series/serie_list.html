@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="/static/assets/img/section/section.jpg">
+	{% csrf_token %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="section__wrap">
+					<!-- section title -->
+					<h1 class="section__title">Seriallar</h1>
+					<!-- end section title -->
+
+					<!-- breadcrumb -->
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="index.html">Ana Səhifə</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">Seriallar</li>
+					</ul>
+					<!-- end breadcrumb -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end page title -->
+
+<!-- filter -->
+<div class="filter">
+	<div class="container">
+		<div class="row">
+			<form action="">
+			<div class="col-12">
+				<div class="filter__content">
+					<div class="filter__items">
+						<!-- filter item -->
+						<div class="filter__item" id="filter__genre">
+							<span class="filter__item-label">Janr:</span>
+
+							<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<input type="button" value="Janr seçin">
+								<span></span>
+							</div>
+
+							<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+								{% for genre in  genres %}
+									
+									 <li><input style="margin-right: 5px;" type="checkbox" name="genre" value="{{genre.id}}">{{genre.name}}</li>	
+									
+									
+								{% endfor %}
+								
+								
+							</ul>
+						</div>
+						<!-- end filter item -->
+
+
+
+						
+						
+
+
+
+
+						<!-- filter item -->
+						<div class="filter__item" id="filter__quality">
+							<span class="filter__item-label">Dil</span>
+
+							<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-quality" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<input type="button" value="Dil seçin">
+								<span></span>
+							</div>
+
+							<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-quality">
+								{% for lang in  language %}
+									
+									 <li><input style="margin-right: 5px;" type="checkbox" name="language" value="{{lang.id}}">{{lang.name}}</li>	
+									
+									
+								{% endfor %}
+							</ul>
+						</div>
+						<!-- end filter item -->
+
+
+
+						<!-- filter item -->
+						<div class="filter__item" id="filter__rate">
+							<span class="filter__item-label">IMdB:</span>
+							
+
+							<div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<div class="filter__range">
+									<div id="filter__imbd-start"></div>
+									<div id="filter__imbd-end"></div>
+								</div>
+								<span></span>
+							</div>
+
+							<div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
+								<div id="filter__imbd"></div>
+								<input type="hidden" name="imdb">
+							</div>
+						</div>
+
+
+						
+						<!-- end filter item -->
+
+						
+						<div class="filter__item" id="filter__year">
+							<span class="filter__item-label">Çıxış Tarixi:</span>
+						
+							<div class="filter__item-btn dropdown-toggle" role="button" id="filter-year" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<div class="filter__range">
+									<div id="filter__years-start"></div>
+									<div id="filter__years-end"></div>
+								</div>
+								<span></span>
+							</div>
+						
+							<div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-year">
+								<div id="filter__years"></div>
+								<!-- Seçilen yılları göstermek için bir input -->
+								<input type="hidden" name="years",value="" >
+							</div>
+						</div>
+					</div>
+					
+					<!-- filter btn -->
+					<button class="filter__btn" id="filterButton" type="submit" class="btn btn-success">Fİlterlə</button>
+					<!-- end filter btn -->
+				</div>
+			</div>
+		</form>
+		</div>
+	</div>
+</div>
+<!-- end filter -->
+
+<!-- catalog -->
+<div class="catalog">
+	<div class="container">
+		<div class="row row--grid">
+			<!-- card -->
+			{% for serie in series %}
+			<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+				<div class="card">
+					<a href="{% url 'series:series-detail' serie.slug %}" class="card__cover">
+						<img src="{{serie.poster.url}}" alt="" width="210" height="260">
+						<span class="card__play">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/></svg>
+						</span>
+					</a>
+					<div class="card__content">
+						
+						<h3 class="card__title"><a href="#">{{serie.title}}</a></h3>
+						
+					
+						
+						<span class="card__category" style="font-weight: bold;margin-top: -3px;">
+							{% for genre in  serie.genres.all %}
+									<a href="#">{{genre.name}}</a>
+							{% endfor %}
+							
+						</span>
+						
+					<span style="color: rgb(227, 74, 74); font-weight: bolder;" ><span style="color: blueviolet; font-weight: bold;"> IMDb</span> {{serie.imdb}}</span>
+					<span style="color: #753750; font-weight: bold;">{{serie.release_date|date:'Y'}}</span>
+
+					{% if user.is_authenticated %}
+					<a onclick="getWish('{{serie.id}}')" class="notifi-wishlist">
+						<i  class="fa fa-heart heart-icon" id="serie-heart-{{serie.id}}"
+						{% if request.user in serie.wishlist.all %} style=color:green; 	
+						{% else %} style=color:red;
+						{% endif %}>
+						</i>
+					</a>
+					{% endif %}
+				  
+				</div>
+
+				</div>
+			</div>
+			{% endfor %}
+			<!-- end card -->
+
+		</div>
+
+		<div class="row">
+			<!-- paginator -->
+			<div class="col-12">
+				<ul class="paginator">
+					<li class="paginator__item paginator__item--prev">
+						{% if series.has_previous %}
+						<a href="?page={{ series.previous_page_number }}"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24"><path d="M8.5,12.8l5.7,5.6c0.4,0.4,1,0.4,1.4,0c0,0,0,0,0,0c0.4-0.4,0.4-1,0-1.4l-4.9-5l4.9-5c0.4-0.4,0.4-1,0-1.4c-0.2-0.2-0.4-0.3-0.7-0.3c-0.3,0-0.5,0.1-0.7,0.3l-5.7,5.6C8.1,11.7,8.1,12.3,8.5,12.8C8.5,12.7,8.5,12.7,8.5,12.8z"/></svg></a>
+						{% endif %}
+					</li>
+					{% for i in series.paginator.page_range  %}
+					{% comment %} <li class="paginator__item"><a href="#">{{i}}</a></li> {% endcomment %}
+					<li class="paginator__item  {% if series.number == i %} paginator__item--active {% endif %}"><a href="?page={{i}}">{{i}}</a></li>
+					{% endfor %}
+					<li class="paginator__item paginator__item--next">
+						{% if series.has_next %}
+						<a href="?page={{ series.next_page_number }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.54,11.29,9.88,5.64a1,1,0,0,0-1.42,0,1,1,0,0,0,0,1.41l4.95,5L8.46,17a1,1,0,0,0,0,1.41,1,1,0,0,0,.71.3,1,1,0,0,0,.71-.3l5.66-5.65A1,1,0,0,0,15.54,11.29Z"/></svg></a>
+						{% endif %}
+					</li>
+				</ul>
+			</div>
+			<!-- end paginator -->
+		</div>
+	</div>
+</div>
+<!-- end catalog -->
+
+
+<!-- expected premiere -->
+<section class="section section--bg" data-bg="/static/assets/img/section/section.jpg">
+	<div class="container">
+		<div class="row">
+			<!-- section title -->
+			<div class="col-12">
+				<h2 class="section__title">Yaxın Zamanda Gələcək Filmlər</h2>
+			</div>
+			<!-- end section title -->
+		</div>
+
+		<div class="row row--grid">
+			<!-- card -->
+			{% for coming_movie in coming_movies  %}
+			<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+				<div class="card">
+					<a href="" style="pointer-events: none" class="card__cover">
+						<img src="{{coming_movie.poster.url}}" alt="" width="210" height="250">
+						<span class="card__play">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/></svg>
+						</span>
+					</a>
+					<div class="card__content">
+						<h3 class="card__title"><a href="#"style="pointer-events: none">{{coming_movie.title}}</a></h3>
+						<span class="card__category" style="font-weight: bold;">
+							{% for genre in  coming_movie.genres.all %}
+									<a href="#" style="pointer-events: none">{{genre.name}}</a>
+							{% endfor %}
+						</span>
+						<span style="color: #753750; font-weight: bold;">{{coming_movie.release_date|date:'M  Y'}}</span>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<!-- end card -->
+
+			
+
+			<!-- section btn -->
+			<div class="col-12">
+				<a href="#" class="section__btn">Show more</a>
+			</div>
+			<!-- end section btn -->
+		</div>
+	</div>
+</section>
+<!-- end expected premiere -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+	const wish_url = "{% url 'series:serie-wish' %}"
+        
+		function getWish(id){
+            var myHeaders = new Headers()
+myHeaders.append('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoken]').value)
+
+    var formData = new FormData()
+
+    formData.append('id', id)
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow',
+    };
+
+    response = fetch(wish_url, requestOptions)
+        .then(function (response) {
+
+            if (response.ok) {
+                response.json().then((data) => {
+                    if(data.success){
+                        $("#trend-heart-"+id).css('color', 'red')
+                    }else{
+                        $("#trend-heart-"+id).css('color', 'green')
+                    }
+                    location.reload(); // Yenileme işlemi
+                })
+            }
+        })
+}	
+
+</script>
+{% endblock  %}

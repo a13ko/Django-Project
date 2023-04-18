@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% block body  %}
+
+
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="section__wrap">
+					<!-- section title -->
+					<h1 class="section__title">My FlixGo</h1>
+					<!-- end section title -->
+
+					<!-- breadcrumb -->
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">Profile</li>
+					</ul>
+					<!-- end breadcrumb -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end page title -->
+
+<!-- content -->
+<div class="content">
+	<!-- profile -->
+	<div class="profile">
+		<div class="container">
+			<div class="row">
+				
+				
+				<div class="col-12">
+					
+					<div class="profile__content">
+							
+						
+						<div class="profile__user">
+							
+							<div class="profile__avatar">
+								{% if request.user.logo %}
+								<img src="{{request.user.logo.url}}" alt="">
+								{% else %}
+								<h3>logo yoxdur</h3>
+								{% endif %}
+								
+							</div>
+							
+							
+							
+							
+							<div class="profile__meta">
+								<h3>Username</h3>
+								<span>{{request.user.username}}</span>
+							</div>
+							
+							
+							
+							
+							
+							
+						</div>
+						
+
+						<!-- content tabs nav -->
+						<ul class="nav nav-tabs content__tabs content__tabs--profile" id="content__tabs" role="tablist">
+							<li class="nav-item" role="presentation">
+								<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profile</a>
+							</li>
+
+							<li class="nav-item" role="presentation">
+								<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Subscription</a>
+							</li>
+
+							
+						</ul>
+						<!-- end content tabs nav -->
+
+						<!-- content mobile tabs nav -->
+						<div class="content__mobile-tabs content__mobile-tabs--profile" id="content__mobile-tabs">
+							<div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<input type="button" value="Profile">
+								<span></span>
+							</div>
+
+							<div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profile</a></li>
+
+									<li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Subscription</a></li>
+
+									
+								</ul>
+							</div>
+						</div>
+						<!-- end content mobile tabs nav -->
+
+						<a href="{% url 'users:logout' %}" class="profile__logout" type="button">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"/></svg>
+							<span>Logout</span>
+						</a>
+					</div>
+					
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+	<!-- end profile -->
+
+	<div class="container">
+		<!-- content tabs -->
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+				<div class="row row--grid">
+					<!-- details form -->
+					
+					<div class="col-6 col-lg-12 col-sm-4">
+						<form method="POST" action="#" enctype="multipart/form-data" class="profile__form">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-12">
+									<h4 class="profile__title">Profile details</h4>
+								</div>
+
+								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+									<div class="profile__group">
+										<!-- <label class="profile__label" for="username">Username</label>
+										<input id="username" type="text" name="username" class="profile__input" placeholder="User 123"> -->
+											{{form.email}}
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+									<div class="profile__group">
+										{{form.username}}
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+									<div class="profile__group">
+										{{form.full_name}}
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+									<div class="profile__group">
+										{{form.logo}}
+									</div>
+								</div>
+								
+
+								<div class="col-12">
+									<button class="profile__btn" type="submit">Save</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					 
+					<!-- end details form -->
+				
+
+					
+
+					
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+				<div class="row row--grid">
+					<!-- price -->
+					<div class="col-12 col-md-6 order-md-1 col-lg-4 order-lg-1">
+						<div class="price price--profile">
+							<div class="price__item price__item--first"><span>Basic</span> <span>Free</span></div>
+							<div class="price__item"><span>7 days</span></div>
+							<div class="price__item"><span>720p Resolution</span></div>
+							<div class="price__item"><span>Limited Availability</span></div>
+							<div class="price__item"><span>Desktop Only</span></div>
+							<div class="price__item"><span>Limited Support</span></div>
+							<a href="#" class="price__btn">Choose Plan</a>
+						</div>
+					</div>
+					<!-- end price -->
+
+					<!-- price -->
+					<div class="col-12 order-md-3 col-lg-4 order-lg-2">
+						<div class="price price--profile price--premium">
+							<div class="price__item price__item--first"><span>Premium</span> <span>$19.99</span></div>
+							<div class="price__item"><span>1 Month</span></div>
+							<div class="price__item"><span>Full HD</span></div>
+							<div class="price__item"><span>Lifetime Availability</span></div>
+							<div class="price__item"><span>TV & Desktop</span></div>
+							<div class="price__item"><span>24/7 Support</span></div>
+							<a href="#" class="price__btn">Choose Plan</a>
+						</div>
+					</div>
+					<!-- end price -->
+
+					<!-- price -->
+					<div class="col-12 col-md-6 order-md-2 col-lg-4 order-lg-3">
+						<div class="price price--profile">
+							<div class="price__item price__item--first"><span>Cinematic</span> <span>$39.99</span></div>
+							<div class="price__item"><span>2 Months</span></div>
+							<div class="price__item"><span>Ultra HD</span></div>
+							<div class="price__item"><span>Lifetime Availability</span></div>
+							<div class="price__item"><span>Any Device</span></div>
+							<div class="price__item"><span>24/7 Support</span></div>
+							<a href="#" class="price__btn">Choose Plan</a>
+						</div>
+					</div>
+					<!-- end price -->
+				</div>
+			</div>
+
+			
+		</div>
+		<!-- end content tabs -->
+	</div>
+</div>
+<!-- end content -->
+
+{% endblock %}
