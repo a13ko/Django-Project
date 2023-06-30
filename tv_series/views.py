@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.contrib import messages
+from django.urls import reverse
 
 
 User = get_user_model()
@@ -61,7 +62,7 @@ def show_list_series(request):
 def serie_wish_view(request):
     data = {}
     serie = get_object_or_404(Serie, id=int(request.POST.get("id")))
-    print(request.POST)
+    
     
     
 
@@ -74,10 +75,6 @@ def serie_wish_view(request):
     
     return JsonResponse(data)
 
-
-
-
-from django.urls import reverse
 
 def premium_user(view_func):
     def wrap(request, *args, **kwargs):

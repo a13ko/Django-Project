@@ -14,9 +14,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-
-
-
+from django.urls import reverse
 
 
 User = get_user_model()
@@ -89,7 +87,7 @@ def show_list(request):
         
     
 
-    paginator = Paginator(movies, 5)
+    paginator = Paginator(movies, 2)
     page = request.GET.get('page', 1)
     movies_list = paginator.get_page(page)
     context = {
@@ -102,11 +100,6 @@ def show_list(request):
     return render(request, 'movies/movie_list.html', context)
 
 
-
-
-
-
-from django.urls import reverse
 
 def premium_user(view_func):
     def wrap(request, *args, **kwargs):
@@ -189,6 +182,8 @@ def wishlist_view(request):
 
     series = Serie.objects.filter(
         wishlist__in=[request.user] ).order_by('-created_at')
+
+    
     
 
     context = {

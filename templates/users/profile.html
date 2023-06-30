@@ -122,34 +122,39 @@
 					<div class="col-6 col-lg-12 col-sm-4">
 						<form method="POST" action="#" enctype="multipart/form-data" class="profile__form">
 							{% csrf_token %}
-							<div class="row">
+							<div class="row">	
 								<div class="col-12">
 									<h4 class="profile__title">Profile details</h4>
 								</div>
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
-										<!-- <label class="profile__label" for="username">Username</label>
-										<input id="username" type="text" name="username" class="profile__input" placeholder="User 123"> -->
+										 <label class="profile__label" for="username">Email</label>
+										<!-- <input id="username" type="text" name="username" class="profile__input" placeholder="User 123"> -->
 											{{form.email}}
 									</div>
 								</div>
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
+										<label class="profile__label" for="logo">Istifadeci Adi</label>
 										{{form.username}}
 									</div>
 								</div>
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
+										<label class="profile__label" for="logo">Ad Soyad</label>
 										{{form.full_name}}
 									</div>
 								</div>
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
-										{{form.logo}}
+										<!-- {{form.logo}} -->
+
+										 <label class="profile__label" for="logo">Logo</label>
+										<input id="username" type="file" name="logo" class="profile__input" accept="image/*" > 
 									</div>
 								</div>
 								

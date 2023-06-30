@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'ckeditor',
+    'rest_framework',
 
 ]
 
@@ -135,7 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = 'aliqoceliyev88@gmail.com'
-EMAIL_HOST_PASSWORD = 'vrftmsauqfnonysq'
+EMAIL_HOST_PASSWORD = 'ubhxvddsetwiiozu'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True

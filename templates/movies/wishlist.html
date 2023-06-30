@@ -28,6 +28,7 @@
 
 
 
+
 <!-- catalog -->
 <div style="margin-top: 80px;" class="catalog">
 	<div class="container">
@@ -35,7 +36,9 @@
 			<div class="col-12">
 				<div class="section__wrap">
 					<!-- section title -->
+					{% if movies %}
 					<h1 class="section__title">Bəyəndiyin Filmlər</h1>
+					{% endif %}
 					<!-- end section title -->
 
 					
@@ -101,13 +104,16 @@
 	<div class="container">
 		<div class="row row--grid">
 			<div class="col-12">
+				
 				<div class="section__wrap">
 					<!-- section title -->
+					{% if series %}
 					<h1 class="section__title">Bəyəndiyin Seriallar</h1>
 					<!-- end section title -->
-			
+					{% endif %}
 					
 				</div>
+				
 			</div>
 			<!-- card -->
 			{% for serie in series %}
@@ -159,8 +165,6 @@
 	</div>
 </div>
 <!-- end catalog -->
-
-
 
 
 
