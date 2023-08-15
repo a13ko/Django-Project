@@ -16,5 +16,6 @@ urlpatterns = [
     path("privacy/",views.show_privacy, name="privacy"),
     path("profile/",views.profile, name="profile"),
     path("plan/",views.plan, name="plan"),
+    path("faq/",views.faq, name="faq"),
     path("checkout/",views.checkout, name="checkout")
 ]

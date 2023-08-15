@@ -54,17 +54,78 @@
 	<title>FlixGo </title>
 
 	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+    const likeButtons = document.querySelectorAll('.like-button');
+    const dislikeButtons = document.querySelectorAll('.dislike-button');
+    
+    const likedComments = new Set();
+    const dislikedComments = new Set();
+    
+    likeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const commentId = button.getAttribute('data-comment-id');
+            if (!likedComments.has(commentId)) {
+                likedComments.add(commentId);
+                likeComment(commentId);
+            }
+        });
+    });
+
+    dislikeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const commentId = button.getAttribute('data-comment-id');
+            if (!dislikedComments.has(commentId)) {
+                dislikedComments.add(commentId);
+                dislikeComment(commentId);
+            }
+        });
+    });
+});
+
+function likeComment(commentId) {
+    fetch(`/like_comment/${commentId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const likeCount = document.querySelector(`.like-count[data-comment-id="${commentId}"]`);
+            likeCount.textContent = data.likes;
+        }
+    });
+}
+
+function dislikeComment(commentId) {
+    fetch(`/dislike_comment/${commentId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const dislikeCount = document.querySelector(`.dislike-count[data-comment-id="${commentId}"]`);
+            dislikeCount.textContent = data.dislikes;
+        }
+    });
+}
+
+
 		function deleteComment(commentId) {
-			var csrftoken = getCookie('csrftoken');  // CSRF token'ı cookie'den alınır
+			var csrftoken = getCookie('csrftoken');  
 			$.ajax({
 				type: "POST",
 				url: "/delete-comment/",
 				data: {
 					comment_id: commentId,
-					csrfmiddlewaretoken: csrftoken  // CSRF token POST verilerine eklenir
+					csrfmiddlewaretoken: csrftoken  
 				},
 				success: function() {
-					window.location.reload();  // sayfa yenilenir
+					window.location.reload();  
 				}
 			});
 		}
@@ -75,7 +136,6 @@
 				var cookies = document.cookie.split(';');
 				for (var i = 0; i < cookies.length; i++) {
 					var cookie = cookies[i].trim();
-					// cookie adı ile başlıyor mu kontrol edilir
 					if (cookie.substring(0, name.length + 1) === (name + '=')) {
 						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
 						break;

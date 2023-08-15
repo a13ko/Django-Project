@@ -123,6 +123,7 @@
 
 	<div class="container">
 		<!-- content tabs -->
+		
 		<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
 				<div class="row row--grid">
@@ -145,19 +146,19 @@
 									{% endfor %}
 									
 								</span>
+								
 
 								<div class="card__wrap">
-									
-
-									<ul>
-										{% for actor in new_movie.actors.all %}
-										<li style='color:white;'>-{{actor.first_name}} {{actor.last_name}}</li>
-									{% endfor %}
-									</ul>
-								</div>
+									<span class="card__rate"> {{new_movie.imdb}}</span>
+											<ul class="card__list">
+												<li>HD</li>
+												<li>{{new_movie.age_limit}}+</li>
+												
+											</ul>
+										</div>
 
 								<div class="card__description">
-									<p>{{new_movie.description|safe}}</p>
+									<span style="font-weight: lighter;">{{new_movie.description|safe}}</span>
 
 								</div>
 								
@@ -191,7 +192,28 @@
 									{% endfor %}
 									
 								</span>
-								<span style="color: rgb(227, 74, 74); font-weight: bolder;" ><span style="color: blueviolet; font-weight: bold;"> IMDb</span> {{movie.imdb}}</span>
+								<div class="card__wrap">
+									<span class="card__rate"> {{movie.imdb}}</span>
+		
+									<ul class="card__list">
+										<li>HD</li>
+										<li>{{movie.age_limit}}+</li>
+										{% if request.user.is_authenticated %}
+										<li><a onclick="getWish('{{ movie.id }}')" class="notifi-wishlist d-inline-block">
+											<i class="fa fa-heart heart-icon"
+												id="trend-heart-{{ movie.id }}"
+												style="color: {% if request.user in movie.wishlist.all %}red{% else %}white{% endif %};">
+											</i>
+										</a>
+											</li>
+											{% endif %}
+										
+									</ul>
+									
+									
+									
+								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -439,9 +461,9 @@
                     if(data.success){
                         $("#trend-heart-"+id).css('color', 'red')
                     }else{
-                        $("#trend-heart-"+id).css('color', 'green')
+                        $("#trend-heart-"+id).css('color', 'white')
                     }
-                    location.reload(); // Yenileme işlemi
+                    location.reload(); 
                 })
             }
         })

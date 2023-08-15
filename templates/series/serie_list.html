@@ -168,19 +168,27 @@
 							{% endfor %}
 							
 						</span>
-						
-					<span style="color: rgb(227, 74, 74); font-weight: bolder;" ><span style="color: blueviolet; font-weight: bold;"> IMDb</span> {{serie.imdb}}</span>
-					<span style="color: #753750; font-weight: bold;">{{serie.release_date|date:'Y'}}</span>
+						<div class="card__wrap">
+							<span class="card__rate"> {{serie.imdb}}</span>
 
-					{% if user.is_authenticated %}
-					<a onclick="getWish('{{serie.id}}')" class="notifi-wishlist">
-						<i  class="fa fa-heart heart-icon" id="serie-heart-{{serie.id}}"
-						{% if request.user in serie.wishlist.all %} style=color:green; 	
-						{% else %} style=color:red;
-						{% endif %}>
-						</i>
-					</a>
-					{% endif %}
+							<ul class="card__list">
+								<li>HD</li>
+								<li>{{serie.age_limit}}+</li>
+								{% if request.user.is_authenticated %}
+								<li><a onclick="getWish('{{serie.id}}')" class="notifi-wishlist">
+									<i  class="fa fa-heart heart-icon" id="serie-heart-{{serie.id}}"
+									{% if request.user in serie.wishlist.all %} style=color:red; 	
+									{% else %} style=color:white;
+									{% endif %}>
+									</i>
+								</a>
+									</li>
+									{% endif %}
+								
+							</ul>
+						</div>
+						
+					
 				  
 				</div>
 
@@ -295,9 +303,9 @@ myHeaders.append('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoke
                     if(data.success){
                         $("#trend-heart-"+id).css('color', 'red')
                     }else{
-                        $("#trend-heart-"+id).css('color', 'green')
+                        $("#trend-heart-"+id).css('color', 'white')
                     }
-                    location.reload(); // Yenileme işlemi
+                    location.reload(); 
                 })
             }
         })

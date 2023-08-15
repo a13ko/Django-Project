@@ -39,7 +39,7 @@
 					<!-- card content -->
 					<div class="card__content">
 						<div class="card__wrap">
-							<span class="card__rate"> 8.4</span>
+							<span class="card__rate"> {{movie.imdb}}</span>
 
 							<ul class="card__list">
 								<li>HD</li>
@@ -55,19 +55,20 @@
 
 						<ul class="card__meta">
 							
-							<li><span>Genre:</span>
+							<li><span>Janr:</span>
 							{% for genre in  movie.genres.all %} 
 								<a href="#">{{genre.name}}</a>
 							{% endfor %}  
-							<li><span>Izlenme Sayi:</span>{{ movie.watched_count }} </li>
-							<li><span>Yayin tarixi:</span> {{movie.release_date|date:'Y'}}</li>
-							<li><span>Running time:</span>{{movie.running_time}} min</li>
-							<li><span>Country:</span> <a href="#">{{movie.country}}</a> </li>
+							<li><span>Izləmə:</span>{{ movie.watched_count }} </li>
+							<li><span>Yayım tarixi:</span> {{movie.release_date|date:'Y'}}</li>
+							<li><span>Davamlılıq:</span>{{movie.running_time}} dəq</li>
+							<li><span>Ölkə:</span> <a href="#">{{movie.country}}</a> </li>
+					
 							
 						</ul>
 						
 						<div class="card__description card__description--details">
-							Haqqinda:
+							Haqqında:
 							{{movie.description|safe}}
 						</div>
 						
@@ -84,10 +85,10 @@
 				<div class="col-12">
 					<ul style="margin-left: 20px;" class="nav nav-tabs row" id="myTab" role="tablist">
 						<li class="nav-item">
-							<a style="font-size: 20px; margin-right: 10px; color: blueviolet;" class="nav-link active" id="fragman-tab" data-toggle="tab" href="#fragman" role="tab" aria-controls="fragman" aria-selected="true">Fragman</a>
+							<a style="font-size: 20px; margin-right: 10px; color: rgb(226, 226, 226);" class="nav-link active" id="fragman-tab" data-toggle="tab" href="#fragman" role="tab" aria-controls="fragman" aria-selected="true">Treiler</a>
 						</li>
 						<li class="nav-item">
-							<a style="font-size: 20px; color: blueviolet;" class="nav-link" id="film-tab" data-toggle="tab" href="#film" role="tab" aria-controls="film" aria-selected="false">Film</a>
+							<a style="font-size: 20px; color: rgb(240, 240, 240);margin-left: 18px;" class="nav-link" id="film-tab" data-toggle="tab" href="#film" role="tab" aria-controls="film" aria-selected="false">Film</a>
 						</li>
 					</ul>
 					<div class="tab-content" id="myTabContent">
@@ -138,6 +139,8 @@
 						</li>
 
 
+						<li class="nav-item" role="presentation">
+							<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a>
 						</li>
 
 						<li class="nav-item" role="presentation">
@@ -178,65 +181,121 @@
 						<div class="row">
 							<!-- comments -->
 							<div class="col-12">
-								
 								<div class="comments">
-									
 									{% for comment in comments %}
-									
 									<ul class="comments__list">
 										<li class="comments__item">
 											<div class="comments__autor">
-												
-												
 												<img class="comments__avatar" src="{{comment.user.logo.url}}" alt="" width="55" height="55">
-												
-												
-												
 												<span class="comments__name">{{ comment.user.username }}</span>
 												<span class="comments__time">{{comment.created_at}}</span>
 											</div>
 											<p class="comments__text">{{ comment.comment }}</p>
 											<div class="comments__actions">
-												<!-- <div class="comments__rate">
-													<button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.3,10.08A3,3,0,0,0,19,9H14.44L15,7.57A4.13,4.13,0,0,0,11.11,2a1,1,0,0,0-.91.59L7.35,9H5a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17.73a3,3,0,0,0,2.95-2.46l1.27-7A3,3,0,0,0,21.3,10.08ZM7,20H5a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H7Zm13-7.82-1.27,7a1,1,0,0,1-1,.82H9V10.21l2.72-6.12A2.11,2.11,0,0,1,13.1,6.87L12.57,8.3A2,2,0,0,0,14.44,11H19a1,1,0,0,1,.77.36A1,1,0,0,1,20,12.18Z"/></svg>12</button>
-
-													<button type="button">7<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,2H6.27A3,3,0,0,0,3.32,4.46l-1.27,7A3,3,0,0,0,5,15H9.56L9,16.43A4.13,4.13,0,0,0,12.89,22a1,1,0,0,0,.91-.59L16.65,15H19a3,3,0,0,0,3-3V5A3,3,0,0,0,19,2ZM15,13.79l-2.72,6.12a2.13,2.13,0,0,1-1.38-2.78l.53-1.43A2,2,0,0,0,9.56,13H5a1,1,0,0,1-.77-.36A1,1,0,0,1,4,11.82l1.27-7a1,1,0,0,1,1-.82H15ZM20,12a1,1,0,0,1-1,1H17V4h2a1,1,0,0,1,1,1Z"/></svg></button>
-												</div> -->
-
-												<!-- <button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.707,11.293l-8-8A.99991.99991,0,0,0,12,4V7.54492A11.01525,11.01525,0,0,0,2,18.5V20a1,1,0,0,0,1.78418.62061,11.45625,11.45625,0,0,1,7.88672-4.04932c.0498-.00635.1748-.01611.3291-.02588V20a.99991.99991,0,0,0,1.707.707l8-8A.99962.99962,0,0,0,21.707,11.293ZM14,17.58594V15.5a.99974.99974,0,0,0-1-1c-.25488,0-1.2959.04932-1.56152.085A14.00507,14.00507,0,0,0,4.05176,17.5332,9.01266,9.01266,0,0,1,13,9.5a.99974.99974,0,0,0,1-1V6.41406L19.58594,12Z"/></svg>Reply</button> -->
+												<div class="comments__rate">
+													<button type="button" class="like-button" data-comment-id="{{ comment.id }}" data-liked="{{ comment.likes.all }}">
+														<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.3,10.08A3,3,0,0,0,19,9H14.44L15,7.57A4.13,4.13,0,0,0,11.11,2a1,1,0,0,0-.91.59L7.35,9H5a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17.73a3,3,0,0,0,2.95-2.46l1.27-7A3,3,0,0,0,21.3,10.08ZM7,20H5a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H7Zm13-7.82-1.27,7a1,1,0,0,1-1,.82H9V10.21l2.72-6.12A2.11,2.11,0,0,1,13.1,6.87L12.57,8.3A2,2,0,0,0,14.44,11H19a1,1,0,0,1,.77.36A1,1,0,0,1,20,12.18Z"/></svg> <span class="like-count">{{ comment.likes.count }}</span>
+													</button>
+													<button type="button" class="dislike-button" data-comment-id="{{ comment.id }}" data-disliked="{{comment.dislikes.all }}">
+														<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,2H6.27A3,3,0,0,0,3.32,4.46l-1.27,7A3,3,0,0,0,5,15H9.56L9,16.43A4.13,4.13,0,0,0,12.89,22a1,1,0,0,0,.91-.59L16.65,15H19a3,3,0,0,0,3-3V5A3,3,0,0,0,19,2ZM15,13.79l-2.72,6.12a2.13,2.13,0,0,1-1.38-2.78l.53-1.43A2,2,0,0,0,9.56,13H5a1,1,0,0,1-.77-.36A1,1,0,0,1,4,11.82l1.27-7a1,1,0,0,1,1-.82H15ZM20,12a1,1,0,0,1-1,1H17V4h2a1,1,0,0,1,1,1Z"/></svg><span class="dislike-count">{{ comment.dislikes.count }}</span>
+													</button>
+												</div>
 												
 												{% if comment.user == request.user %}
-												
-												<button onclick="deleteComment({{ comment.id }})"><svg xmlns= "http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c	-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg> Sil</button>
-												
-												
+												<button onclick="deleteComment({{ comment.id }})">Sil</button>
 												{% endif %}
 											</div>
 										</li>
-
-										
 									</ul>
 									{% endfor %}
-									
-
+							
 									<form method="POST" class="form">
 										{% csrf_token %}
-										
-										{{form.comment}}
+										{{comment_form.comment}}
 										{% if user.is_authenticated %}
 										<button type="submit" class="form__btn">Send</button>
 										{% else %}
-										
 										<a class="form__btn" href="{% url 'users:login' %}">Send</a>
 										{% endif %}
 									</form>
 								</div>
 							</div>
+							
+							
 							<!-- end comments -->
 						</div>
 					</div>
 
-					
+					<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
+						<div class="row">
+							<!-- reviews -->
+							<div class="col-12">
+								<div class="reviews">
+									<ul class="reviews__list">
+    {% for review in reviews %}
+        <li class="reviews__item">
+            <div class="reviews__autor">
+                <img class="comments__avatar" src="{{review.user.logo.url}}" alt="" width="55" height="55">
+                <span class="reviews__name"><span style="color: rebeccapurple; font-weight: bold;">Başlıq:</span>   {{ review.title }}</span>
+                <span class="reviews__time">{{ review.created_at|date:"d.m.Y, by" }} {{ review.user.get_full_name }}</span>
+
+                <span class="reviews__rating">
+                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24">
+                        <path d="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1z"></path>
+                    </svg>{{ review.rating }}</span>
+            </div>
+            <p class="reviews__text">{{ review.text }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<br><br><br>
+									<form action="#" method="post" class="form"> <!-- "method" ve "class" özellikleri ekleyin -->
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-12 col-md-4">
+												<div class="sign__group" >
+													<!-- "name" özelliği ekleyin -->
+													<input type="text" class="sign__input" placeholder="Title" name="title" style="width: 161%;">
+												</div>
+											</div>
+									
+											<div class="col-12 col-md-6">
+												<div class="sign__group">
+													<select class="sign__select" name="rating" id="rating" style=" text-align:left; margin-left: 115px; padding:15px 35px; background-color:#2b2b31; border-radius: 4px; border: 1px; color: #949497; font-size: 16px; width: 100%;">
+														<option value="0">Rating</option>
+														<option value="1">1 </option>
+														<option value="2">2 </option>
+														<option value="3">3 </option>
+														<option value="4">4 </option>
+														<option value="5">5 </option>
+														<option value="6">6 </option>
+														<option value="7">7 </option>
+														<option value="8">8 </option>
+														<option value="9">9 </option>
+														<option value="10">10 </option>
+														<!-- Diğer seçenekleri buraya ekleyin -->
+													</select>
+												</div>
+											</div>
+									
+											<div class="col-12">
+												<div class="sign__group" >
+													<!-- "name" özelliği ekleyin -->
+													<textarea style=" text-align:left; padding:50px 40px; background-color:#2b2b31; border-radius: 4px; border: 1px; color: #fff; font-size: 16px; width: 100%;" class="sign__textarea" placeholder="Write a review" name="text"></textarea>
+												</div>
+											</div>
+									
+											<div class="col-12">
+												<!-- "type" değerini "submit" olarak değiştirin -->
+												<button type="submit" class="sign__btn sign__btn--small"><span>Send</span></button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- end reviews -->
+						</div>
+					</div>
 
 					<div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
 						<!-- project gallery -->
@@ -360,6 +419,41 @@
 </div>
 
 {% endblock %}
+
+{% block js %}
+<script>
+	$(document).ready(function() {
+    $(".like-button").click(function() {
+        var commentId = $(this).data("comment-id");
+        var liked = $(this).data("liked");
+        
+        $.post("/like/" + commentId + "/", { csrfmiddlewaretoken: "{{ csrf_token }}", liked: liked }, function(data) {
+            $(".like-count[data-comment-id='" + commentId + "']").text(data.likes);
+            $(".dislike-count[data-comment-id='" + commentId + "']").text(data.dislikes);
+            $(".like-button[data-comment-id='" + commentId + "']").data("liked", !liked);
+            $(".dislike-button[data-comment-id='" + commentId + "']").data("disliked", false);
+        });
+		location.reload();
+
+    });
+
+    $(".dislike-button").click(function() {
+        var commentId = $(this).data("comment-id");
+        var disliked = $(this).data("disliked");
+        
+        $.post("/dislike/" + commentId + "/", { csrfmiddlewaretoken: "{{ csrf_token }}", disliked: disliked }, function(data) {
+            $(".like-count[data-comment-id='" + commentId + "']").text(data.likes);
+            $(".dislike-count[data-comment-id='" + commentId + "']").text(data.dislikes);
+            $(".dislike-button[data-comment-id='" + commentId + "']").data("disliked", !disliked);
+            $(".like-button[data-comment-id='" + commentId + "']").data("liked", false);
+        });
+		location.reload();
+    });
+});
+
+</script>
+{% endblock  %}
+
 
 
 

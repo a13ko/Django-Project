@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie , Genre , Actor ,MovieGalleryImage,MovieGalleryVideo,Language,ComingMovie,Country,Comment
+from .models import Movie , Genre , Actor ,MovieGalleryImage,MovieGalleryVideo,Language,ComingMovie,Country,Comment,Review
 
 class MovieImageInline(admin.TabularInline):
     model = MovieGalleryImage
@@ -16,6 +16,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 admin.site.register(Movie,MovieAdmin)
 admin.site.register(Genre)
+admin.site.register(Review)
 admin.site.register(Actor)
 admin.site.register(Language)
 admin.site.register(MovieGalleryImage)

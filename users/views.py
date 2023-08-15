@@ -202,6 +202,9 @@ def profile(request):
 
 def plan(request):
     return render(request,'users/pricing.html',{})
+
+def faq(request):
+    return render(request,'users/faq.html',{})
     
 
 

@@ -4,27 +4,24 @@ from tv_series.models import Serie
 from users.models import MyUser
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
-from django.db.models import Count
-from django.db.models import Q
+from django.db.models import Count,Avg,Q
 from django.db.models.functions import ExtractYear
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from .forms import CommentForm
+from .forms import CommentForm,ReviewForm
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.urls import reverse
 
-
 User = get_user_model()
 
-# Create your views here.
 def show_home(request):
     trends=Movie.objects.annotate(user_count=Count('wishlist')).order_by('-user_count')[:20]
-    imdb = Movie.objects.order_by('-imdb')
+    imdb = Movie.objects.order_by('-imdb')[:6]
     movies=Movie.objects.all()
-    new_movies=Movie.objects.order_by('-created_at')[:4]
+    new_movies=Movie.objects.order_by('-created_at')[:6]
     series=Serie.objects.all()
     new_series = Serie.objects.order_by('-created_at')[:6]
     users=User.objects.all()
@@ -123,30 +120,76 @@ def premium_user(view_func):
 
     return wrap
 
+
 @premium_user
 def movie_details(request, slug):
     movie = get_object_or_404(Movie, slug=slug)
-    session_key = 'viewed_movie_{}'.format(movie.id)
+    session_key = f'viewed_movie_{movie.id}'
     if not request.session.get(session_key, False):
         movie.watched_count += 1
         movie.save()
         request.session[session_key] = True
+
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
+        comment_form = CommentForm(request.POST)
+        review_form = ReviewForm(request.POST)
+
+        if not request.user.is_authenticated: 
+            return redirect('users:login')  
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
             comment.movie = movie
             comment.user = request.user
             comment.save()
             return redirect('movies:movies-detail', slug=slug)
+        elif review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.movie = movie
+            review.user = request.user
+            review.save()
+            return redirect('movies:movies-detail', slug=slug)
     else:
-        form = CommentForm()
+        comment_form = CommentForm()
+        review_form = ReviewForm()
+
     comments = Comment.objects.filter(movie=movie).order_by('-created_at')
-    trends=Movie.objects.annotate(user_count=Count('wishlist')).order_by('-user_count')[:20]
+    trends = Movie.objects.annotate(user_count=Count('wishlist')).order_by('-user_count')[:20]
+    reviews = Review.objects.filter(movie=movie).order_by('-created_at')
+    average_rating = Review.objects.filter(movie=movie).aggregate(Avg('rating'))
+    if average_rating['rating__avg']:
+        average_rating = round(average_rating['rating__avg'], 1)
+
+    return render(request, 'movies/movie_detail.html', {'movie': movie, 'comment_form': comment_form,'average_rating': average_rating,'reviews': reviews, 'review_form': review_form, 'comments': comments, 'trends': trends})
+
+
+@login_required
+def like_comment(request, comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    liked = request.POST.get("liked") == "true"
     
-    return render(request, 'movies/movie_detail.html', {'movie': movie, 'form': form, 'comments': comments,'trends': trends})
+    if liked:
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+        comment.dislikes.remove(request.user)
+    
+    data = {"likes": comment.likes.count(), "dislikes": comment.dislikes.count()}
+    return JsonResponse(data)
 
-
+@login_required
+def dislike_comment(request, comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    disliked = request.POST.get("disliked") == "true"
+    
+    if disliked:
+        comment.dislikes.remove(request.user)
+    else:
+        comment.dislikes.add(request.user)
+        comment.likes.remove(request.user)
+    
+    data = {"likes": comment.likes.count(), "dislikes": comment.dislikes.count()}
+    return JsonResponse(data)
 
 
 @login_required

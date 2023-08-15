@@ -16,8 +16,6 @@ from django.contrib.auth import get_user_model
 # Create your models here.
 User = get_user_model()
 
-
-
 class Country(DateMixin):
     name = models.CharField(max_length=255,blank=True,null=True)
 
@@ -94,25 +92,37 @@ class Movie(SlugMixin,DateMixin):
         return super().save(*args, **kwargs)
 
 
+class Review(DateMixin):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)])
+    title = models.TextField(default="null")
+    text = RichTextField(default="null")
+    
 
+    class Meta:
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'
+    
+
+    def __str__(self):
+        return f'{self.user.username} - {self.movie.title}'
 
 
 class Comment(DateMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     comment = RichTextField()
+    likes = models.ManyToManyField(User, related_name='liked_comments', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='disliked_comments', blank=True)  
 
     class Meta:
         verbose_name = 'Comment'
         verbose_name_plural = 'Commentlər'
 
-
-
     def __str__(self):
         return f'{self.user.username} - {self.movie.title}'
 
-
-    
     def can_delete(self, user):
         return self.user == user
     
