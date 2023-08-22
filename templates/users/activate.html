@@ -38,7 +38,7 @@
 					<form method="POST" class="sign__form">
 						{% csrf_token %}
 						<a href="{% url 'movies:home' %}" class="sign__logo">
-							<img src="/static/assets/img/logo.svg" alt="">
+							<span style="color: floralwhite; font-weight: bold;font-size: 30px;">Flix</span><span style="color: #18759f;font-weight: bold;font-size: 30px;">Go</span>
 						</a>
 
 						<div class="sign__group">
@@ -55,7 +55,7 @@
 
 						<div class="sign__group sign__group--checkbox">
 							<input id="remember" name="remember" type="checkbox" checked="checked">
-							<label for="remember">Remember Me</label>
+							<label for="remember">Məni Xatırla</label>
 						</div>
 						
 						<button class="sign__btn" type="submit">Sign in</button>

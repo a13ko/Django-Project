@@ -11,6 +11,8 @@ urlpatterns = [
     path("series-episode/",serie_episode, name="series-episode"),
     path('delete-comments/', delete_comment, name='delete_comments'),
     path('delete-commentss/', delete_comments, name='delete_commentss'),
-    
-
+    path('like-serie/<int:comment_id>/',like_comment, name='like_serie_comment'),
+    path('dislike-serie/<int:comment_id>/',dislike_comment, name='dislike_serie_comment'),
+    path('like-episode-serie/<int:comment_id>/',like_episode_comment, name='like_serie_comment'),
+    path('dislike-episode-serie/<int:comment_id>/',dislike_episode_comment, name='dislike_serie_comment'),
 ]

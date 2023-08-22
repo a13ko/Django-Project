@@ -64,8 +64,9 @@
 							{% for genre in  movie.genres.all %}
 									<a href="#">{{genre.name}}</a>
 							{% endfor %}
-							<span style="color: #753750; font-weight: bold;">{{movie.release_date|date:'Y'}}</span>
+							
 						</span>
+						<span style="color: #753750; font-weight: bold;">{{movie.release_date|date:'Y'}}</span>
 						<div class="card__wrap">
 							<span class="card__rate"> {{movie.imdb}}</span>
 
@@ -148,9 +149,9 @@
 								
 							
 						</span>
-						<span style="color: #753750; font-weight: bold;">{{serie.release_date|date:'Y'}}</span>
+						<span style="color: #cf6794; font-weight: bold;">{{serie.release_date|date:'Y'}}</span>
 
-						<div class="card__wrap">
+						<div class="card__wrap" style="margin-bottom: 50px;">
 							<span class="card__rate"> {{serie.imdb}}</span>
 
 							<ul class="card__list">
@@ -169,6 +170,7 @@
 								
 							</ul>
 						</div>
+						
 						
 
 					
@@ -230,11 +232,6 @@
 
 			
 
-			<!-- section btn -->
-			<div class="col-12">
-				<a href="#" class="section__btn">Show more</a>
-			</div>
-			<!-- end section btn -->
 		</div>
 	</div>
 </section>

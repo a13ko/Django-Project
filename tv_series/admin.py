@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Season , Episode, Serie, SerieGallery,EpisodeGallery,Genre,Actor,Country,Language,Comment,CommentEpisode
+from .models import Season , Episode, Serie, SerieGallery,EpisodeGallery,Genre,Actor,Country,Language,Comment,CommentEpisode,Review,EpisodeReview
 # Register your models here.
 class EpisodeVideoInline(admin.TabularInline):
     model = EpisodeGallery
@@ -17,6 +17,8 @@ class SerieAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Season)
+admin.site.register(Review)
+admin.site.register(EpisodeReview)
 admin.site.register(Episode,EpisodeAdmin)
 admin.site.register(Serie,SerieAdmin)
 admin.site.register(EpisodeGallery)

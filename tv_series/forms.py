@@ -1,5 +1,5 @@
 from django import forms
-from tv_series.models import Comment,CommentEpisode
+from tv_series.models import Comment,CommentEpisode,Review,EpisodeReview
 
 class CommentForm(forms.ModelForm):
     comment =  forms.CharField(widget=forms.Textarea(attrs={ 
@@ -24,3 +24,12 @@ class CommentEpisodeForm(forms.ModelForm):
         model = CommentEpisode
         fields = ('commentepisode',)
 
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'text', 'title']
+
+class ReviewEpisodeForm(forms.ModelForm):
+    class Meta:
+        model = EpisodeReview
+        fields = ['rating', 'text', 'title']

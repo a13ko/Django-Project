@@ -17,8 +17,8 @@
 	{% csrf_token %}
 	<!-- home bg -->
 	<div class="owl-carousel home__bg">
+		<div class="item home__cover" data-bg="/static/assets/img/home/home__bg7.jpg"></div>
 		<div class="item home__cover" data-bg="/static/assets/img/home/home__bg.jpg"></div>
-		<div class="item home__cover" data-bg="/static/assets/img/home/home__bg2.jpg"></div>
 		<div class="item home__cover" data-bg="/static/assets/img/home/home__bg3.jpg"></div>
 		<div class="item home__cover" data-bg="/static/assets/img/home/home__bg4.jpg"></div>
 	</div>
@@ -27,7 +27,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h1 class="home__title"><b>Ən Çox Bəyənilən</b> Filmlər</h1>
+				<h1 class="home__title"><b>Bəyənilən</b> Filmlər</h1>
 
 				<button class="home__nav home__nav--prev" aria-label="prev card" type="button">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,11H9.41l3.3-3.29a1,1,0,1,0-1.42-1.42l-5,5a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l5,5a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L9.41,13H17a1,1,0,0,0,0-2Z"/></svg>
@@ -246,9 +246,27 @@
 									<a href="#">{{genre.name}}</a>
 									{% endfor %}
 								</span>
-								
+								<div class="card__wrap">
+									<span class="card__rate"> {{serie.imdb}}</span>
+		
+									<ul class="card__list">
+										<li>HD</li>
+										<li>{{serie.age_limit}}+</li>
+										{% if request.user.is_authenticated %}
+										<li><a onclick="getWishd('{{serie.id}}')" class="notifi-wishlist">
+											<i  class="fa fa-heart heart-icon" id="serie-heart-{{serie.id}}"
+											{% if request.user in serie.wishlist.all %} style=color:red; 	
+											{% else %} style=color:white;
+											{% endif %}>
+											</i>
+										</a>
+											</li>
+											{% endif %}
+										
+									</ul>
+								</div>
 									
-									<span style="color: rgb(227, 74, 74); font-weight: bolder;" ><span style="color: blueviolet; font-weight: bold;"> IMDb</span> {{serie.imdb}}</span>
+									
 									
 								
 								
@@ -274,8 +292,11 @@
 	</div>
 </section>
 <!-- end content -->
-
+<div class="content__head">
+	<hr >
+</div>
 <!-- expected premiere -->
+<div>
 <section class="section section--bg" data-bg="/static/assets/img/section/section.jpg">
 	<div class="container">
 		<div class="row">
@@ -314,14 +335,16 @@
 
 			<!-- section btn -->
 			<div class="col-12">
-				<a href="{% url 'movies:movies' %}" class="section__btn">Show more</a>
+				<a href="{% url 'movies:movies' %}" class="section__btn">Daha çox</a>
 			</div>
 			<!-- end section btn -->
 			
 		</div>
 	</div>
 </section> 
-<hr style="border: 2px solid #ec699e;">
+<div class="content__head">
+<hr >
+</div>
 
 <section class="section section--bg" data-bg="/static/assets/img/section/section.jpg">
 	<div class="container">
@@ -363,7 +386,9 @@
 		</div>
 	</div>
 </section>
-<hr style="border: 2px solid #ec699e;">
+<div class="content__head">
+	<hr >
+</div>
 <!-- end expected premiere -->
 
 <!-- partners -->

@@ -135,16 +135,16 @@
 					<!-- content tabs nav -->
 					<ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
 						<li class="nav-item" role="presentation">
-							<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Comments</a>
+							<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Rəylər</a>
 						</li>
 
 
 						<li class="nav-item" role="presentation">
-							<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a>
+							<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reyting</a>
 						</li>
 
 						<li class="nav-item" role="presentation">
-							<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Photos</a>
+							<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Galereya</a>
 						</li>
 					</ul>
 					<!-- end content tabs nav -->
@@ -215,7 +215,7 @@
 										{% if user.is_authenticated %}
 										<button type="submit" class="form__btn">Send</button>
 										{% else %}
-										<a class="form__btn" href="{% url 'users:login' %}">Send</a>
+										<a class="form__btn" href="{% url 'users:login' %}">Göndər</a>
 										{% endif %}
 									</form>
 								</div>
@@ -248,21 +248,21 @@
         </li>
     {% endfor %}
 </ul>
-<br><br><br>
-									<form action="#" method="post" class="form"> <!-- "method" ve "class" özellikleri ekleyin -->
+
+									<form action="#" method="post" class="form"> 
 										{% csrf_token %}
 										<div class="row">
 											<div class="col-12 col-md-4">
 												<div class="sign__group" >
-													<!-- "name" özelliği ekleyin -->
-													<input type="text" class="sign__input" placeholder="Title" name="title" style="width: 161%;">
+													
+													<input type="text" class="sign__input" placeholder="Başlıq" name="title" style="width: 161%;">
 												</div>
 											</div>
 									
 											<div class="col-12 col-md-6">
 												<div class="sign__group">
 													<select class="sign__select" name="rating" id="rating" style=" text-align:left; margin-left: 115px; padding:15px 35px; background-color:#2b2b31; border-radius: 4px; border: 1px; color: #949497; font-size: 16px; width: 100%;">
-														<option value="0">Rating</option>
+														<option value="0">Reyting</option>
 														<option value="1">1 </option>
 														<option value="2">2 </option>
 														<option value="3">3 </option>
@@ -273,21 +273,21 @@
 														<option value="8">8 </option>
 														<option value="9">9 </option>
 														<option value="10">10 </option>
-														<!-- Diğer seçenekleri buraya ekleyin -->
+														
 													</select>
 												</div>
 											</div>
 									
 											<div class="col-12">
 												<div class="sign__group" >
-													<!-- "name" özelliği ekleyin -->
-													<textarea style=" text-align:left; padding:50px 40px; background-color:#2b2b31; border-radius: 4px; border: 1px; color: #fff; font-size: 16px; width: 100%;" class="sign__textarea" placeholder="Write a review" name="text"></textarea>
+													
+													<textarea style=" text-align:left; padding:50px 40px; background-color:#2b2b31; border-radius: 4px; border: 1px; color: #fff;  font-size: 16px; width: 100%;" class="sign__textarea" placeholder=" Rəy bildir" name="text"></textarea>
 												</div>
 											</div>
 									
 											<div class="col-12">
-												<!-- "type" değerini "submit" olarak değiştirin -->
-												<button type="submit" class="sign__btn sign__btn--small"><span>Send</span></button>
+												
+												<button type="submit" class="sign__btn sign__btn--small"><span>Göndər</span></button>
 											</div>
 										</div>
 									</form>
@@ -427,7 +427,7 @@
         var commentId = $(this).data("comment-id");
         var liked = $(this).data("liked");
         
-        $.post("/like/" + commentId + "/", { csrfmiddlewaretoken: "{{ csrf_token }}", liked: liked }, function(data) {
+        $.post("/like-movie/" + commentId + "/", { csrfmiddlewaretoken: "{{ csrf_token }}", liked: liked }, function(data) {
             $(".like-count[data-comment-id='" + commentId + "']").text(data.likes);
             $(".dislike-count[data-comment-id='" + commentId + "']").text(data.dislikes);
             $(".like-button[data-comment-id='" + commentId + "']").data("liked", !liked);
@@ -441,7 +441,7 @@
         var commentId = $(this).data("comment-id");
         var disliked = $(this).data("disliked");
         
-        $.post("/dislike/" + commentId + "/", { csrfmiddlewaretoken: "{{ csrf_token }}", disliked: disliked }, function(data) {
+        $.post("/dislike-movie/" + commentId + "/", { csrfmiddlewaretoken: "{{ csrf_token }}", disliked: disliked }, function(data) {
             $(".like-count[data-comment-id='" + commentId + "']").text(data.likes);
             $(".dislike-count[data-comment-id='" + commentId + "']").text(data.dislikes);
             $(".dislike-button[data-comment-id='" + commentId + "']").data("disliked", !disliked);

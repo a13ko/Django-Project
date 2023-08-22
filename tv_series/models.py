@@ -131,23 +131,50 @@ class Episode(SlugMixin,DateMixin):
         self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
 
+class Review(DateMixin):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tv_series_reviews')
+    serie = models.ForeignKey(Serie, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)])
+    title = models.TextField(default="null")
+    text = RichTextField(default="null")
+    
+    class Meta:
+        verbose_name = 'Serial Reyting'
+        verbose_name_plural = 'Serial Reyting'
+    
+    def __str__(self):
+        return f'{self.user.username} - {self.serie.title}'
+
+class EpisodeReview(DateMixin):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tv_episodes_reviews')
+    episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)])
+    title = models.TextField(default="null")
+    text = RichTextField(default="null")
+    
+    class Meta:
+        verbose_name = 'Epizod Reyting'
+        verbose_name_plural = 'Epizod Reyting'
+    
+    def __str__(self):
+        return f'{self.user.username} - {self.episode.title}'
+
+
 
 class Comment(DateMixin):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tv_series_comments')
     serie = models.ForeignKey(Serie, on_delete=models.CASCADE)
     comment = RichTextField()
+    likes = models.ManyToManyField(User, related_name='tv_series_liked_comments', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='tv_series_disliked_comments', blank=True)  
 
     class Meta:
         verbose_name = 'Comment'
         verbose_name_plural = 'Commentlər'
 
-
-
     def __str__(self):
-        return f'{self.user.username} - {self.serie.title} '
+        return f'{self.user.username} - {self.serie.title}'
 
-
-    
     def can_delete(self, user):
         return self.user == user
 
@@ -156,6 +183,8 @@ class CommentEpisode(DateMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='commentler')
     episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
     commentepisode = RichTextField()
+    likes = models.ManyToManyField(User, related_name='tv_episodes_liked_comments', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='tv_episodes_disliked_comments', blank=True)  
 
     class Meta:
         verbose_name = 'Comment'

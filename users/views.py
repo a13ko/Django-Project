@@ -77,7 +77,6 @@ def account_activate_view(request, slug):
 
         if form.is_valid():
             form.save(user=user)
-            # login(request, user)
             return redirect('users:login')
 
 
@@ -167,22 +166,6 @@ def before_reset(request):
 
 def show_privacy(request):
     return render(request, 'users/privacy.html',{})
-
-
-
-
-
-# def profile(request):
-#     profiles = User.objects.all()
-#     if request.method == 'POST':
-#         form = UserDataChangeForm(request.POST, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('/users/profile') 
-#     else:
-#         form = UserDataChangeForm(instance=request.user)
-    
-#     return render(request, 'users/profile.html',{'form': form,'profiles':profiles})
 
 
 def profile(request):

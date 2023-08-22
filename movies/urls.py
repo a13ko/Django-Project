@@ -12,8 +12,8 @@ urlpatterns = [
     path("movie-wish/",movie_wish_view, name="movie-wish"),
     path("wishlist/",wishlist_view, name="wishlist"),
     path("movie-serie/",movie_serie, name="movie-serie"),
-    path('like/<int:comment_id>/',like_comment, name='like_comment'),
-    path('dislike/<int:comment_id>/',dislike_comment, name='dislike_comment'),
+    path('like-movie/<int:comment_id>/',like_comment, name='like_comment'),
+    path('dislike-movie/<int:comment_id>/',dislike_comment, name='dislike_comment'),
     
     
 ]

@@ -41,7 +41,7 @@
 	<link rel="stylesheet" href="/static/assets/css/photoswipe.css">
 	<link rel="stylesheet" href="/static/assets/css/default-skin.css">
 	<link rel="stylesheet" href="/static/assets/css/main.css">
-	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/path/to/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
 	<!-- Favicons -->
@@ -54,65 +54,7 @@
 	<title>FlixGo </title>
 
 	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-    const likeButtons = document.querySelectorAll('.like-button');
-    const dislikeButtons = document.querySelectorAll('.dislike-button');
-    
-    const likedComments = new Set();
-    const dislikedComments = new Set();
-    
-    likeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const commentId = button.getAttribute('data-comment-id');
-            if (!likedComments.has(commentId)) {
-                likedComments.add(commentId);
-                likeComment(commentId);
-            }
-        });
-    });
-
-    dislikeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const commentId = button.getAttribute('data-comment-id');
-            if (!dislikedComments.has(commentId)) {
-                dislikedComments.add(commentId);
-                dislikeComment(commentId);
-            }
-        });
-    });
-});
-
-function likeComment(commentId) {
-    fetch(`/like_comment/${commentId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const likeCount = document.querySelector(`.like-count[data-comment-id="${commentId}"]`);
-            likeCount.textContent = data.likes;
-        }
-    });
-}
-
-function dislikeComment(commentId) {
-    fetch(`/dislike_comment/${commentId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const dislikeCount = document.querySelector(`.dislike-count[data-comment-id="${commentId}"]`);
-            dislikeCount.textContent = data.dislikes;
-        }
-    });
-}
+		
 
 
 		function deleteComment(commentId) {
@@ -165,7 +107,7 @@ function dislikeComment(commentId) {
 					<div class="header__content">
 						<!-- header logo -->
 						<a href="{% url 'movies:home' %}" class="header__logo">
-							<img src="/static/assets/img/logo.svg" alt="">
+							<span style="color: floralwhite; font-weight: bold;font-size: 33px;">FLIX</span><span style="color: #18759f;font-weight: bold;font-size: 34px;">GO</span>
 						</a>
 						<!-- end header logo -->
 
@@ -203,8 +145,16 @@ function dislikeComment(commentId) {
 								<a href="{% url 'series:series' %}" class="header__nav-link">Serial</a>
 							</li>
 
+							<li class="header__nav-item">
+								{% if user.is_authenticated %}
+									<a href="{% url 'movies:wishlist' %}" class="header__nav-link">Bəyəndiklərim</a>
+									{% endif %}
+
+								
+							</li>
+
 							<!-- dropdown -->
-							{% if request.user.is_authenticated %}
+							<!-- {% if request.user.is_authenticated %}
 							<li class="dropdown header__nav-item">
 								<a class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,10a2,2,0,1,0,2,2A2,2,0,0,0,12,10ZM5,10a2,2,0,1,0,2,2A2,2,0,0,0,5,10Zm14,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z"/></svg>
@@ -214,16 +164,16 @@ function dislikeComment(commentId) {
 									{% if user.is_authenticated %}
 									<li><a href="{% url 'movies:wishlist' %}">Bəyəndikləriniz</a></li>
 									{% endif %}
-									<!-- <li><a href="about.html">About</a></li>
+									 <li><a href="about.html">About</a></li>
 									<li><a href="profile.html">Profile</a></li>
 									<li><a href="privacy.html">Privacy Policy</a></li>
 									<li><a href="contacts.html">Contacts</a></li>
 									<li><a href="404.html">404 Page</a></li> -->
-								</ul>
+								<!-- </ul>
 							</li>
-							{% endif %}
+							{% endif %}  -->
 							<!-- end dropdown -->
-						</ul>
+						<!-- </ul> -->
 						<!-- end header nav -->
 
 						<!-- header auth -->
@@ -243,14 +193,15 @@ function dislikeComment(commentId) {
 								</a>
 
 								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuLang">
-									<li style="color:#ff55a5;font-weight:bold;">{{user.full_name}}</a>
+									<li style="color:#03A9F4;font-weight:bold;">{{user.full_name}}</a>
 										{% if user.is_authenticated %}
 									<li><a href="{% url 'users:logout' %}">Logout</a></li>
 									
 									<li><a href="{% url 'users:profile' %}">Profil</a></li>
 									{% endif %}
-
+									{% if not user.is_authenticated %}
 									<li><a href="{% url 'users:login' %}">Login</a></li>
+									{% endif %}
 									<li><a href="{% url 'users:register' %}">Register</a></li>
 									{% if user.is_authenticated %}
 									<li><a href="{% url 'users:change-password' %}">Change password</a></li>
@@ -261,6 +212,7 @@ function dislikeComment(commentId) {
 								</ul>
 							</li>
 							<!-- end dropdown -->
+							
 							{% if not request.user.is_authenticated %}
 							<a href="{% url 'users:register' %}" class="header__sign-in">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z"/></svg>
@@ -290,8 +242,8 @@ function dislikeComment(commentId) {
 			<div class="row">
 				<div class="col-12">
 					<div class="header__search-content">
-						<input type="text" name="search" placeholder="I'm looking for...">
-						<button type="submit">Search</button>
+						<input type="text" name="search" placeholder="Axtarıram...">
+						<button type="submit">Axtar</button>
 					</div>
 				</div>
 			</div>

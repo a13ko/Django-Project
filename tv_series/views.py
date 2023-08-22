@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect    
-from tv_series.models import Comment,Serie,Episode,EpisodeGallery,SerieGallery,Season,Genre,Country,Actor,Language,CommentEpisode
+from tv_series.models import Comment,Serie,Episode,EpisodeGallery,SerieGallery,Season,Genre,Country,Actor,Language,CommentEpisode,Review,EpisodeReview
 from users.models import MyUser
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.db.models.functions import ExtractYear
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from tv_series.forms import CommentForm,CommentEpisodeForm
+from tv_series.forms import CommentForm,CommentEpisodeForm,ReviewForm,ReviewEpisodeForm
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -103,27 +103,32 @@ def premium_user(view_func):
 
 @premium_user
 def serie_detail(request, slug): 
+    serie = get_object_or_404(Serie, slug=slug)
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
+        comment_form = CommentForm(request.POST)
+        review_form = ReviewForm(request.POST)
+        if comment_form.is_valid():
             serie = get_object_or_404(Serie, slug=slug)
-            comment = form.save(commit=False)
+            comment = comment_form.save(commit=False)
             comment.serie = serie
             comment.user = request.user
             comment.save()
             return redirect('series:series-detail', slug=slug)
+        elif review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.serie = serie
+            review.user = request.user
+            review.save()
+            return redirect('series:series-detail', slug=slug)
     else:
-        form = CommentForm()
-    serie = get_object_or_404(Serie, slug=slug)
+        comment_form = CommentForm()
+        review_form = ReviewForm()
     
-
-	
-
     seasons = serie.seasons.all().order_by('number')
+    reviews = Review.objects.filter(serie=serie).order_by('-created_at')
     episodes = Episode.objects.filter(serie=serie)
     comments = Comment.objects.filter(serie=serie).order_by('-created_at')
-    return render(request, 'series/serie_detail.html', {'serie': serie, 'seasons': seasons,'episodes':episodes,'comments':comments, 'form': form})
-
+    return render(request, 'series/serie_detail.html', {'serie': serie, 'seasons': seasons,'reviews': reviews,'episodes':episodes,'comments':comments, 'review_form': review_form,'comment_form':comment_form})
 
 
 def serie_episode(request):
@@ -140,20 +145,29 @@ def serie_episode(request):
     episodes = Episode.objects.filter(serie=serie)
     comments = CommentEpisode.objects.filter(episode=episode).order_by('-created_at')
 
+
     if request.method == 'POST':
         form = CommentEpisodeForm(request.POST)
+        review_form = ReviewEpisodeForm(request.POST)
         if form.is_valid():
             commentepisode = form.save(commit=False)
             commentepisode.episode = episode
             commentepisode.user = request.user
             commentepisode.save()
-            
+            return redirect(reverse('series:series-episode') + f'?episode={episode_title}')
+        elif review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.episode = episode
+            review.user = request.user
+            review.save()
+            return redirect(reverse('series:series-episode') + f'?episode={episode_title}')
     else:
         form = CommentEpisodeForm()
+        review_form = ReviewEpisodeForm()
 
-    return render(request, 'series/serial_bolum.html', {'episode': episode, 'serie': serie, 'seasons': seasons,'episodes': episodes,'form':form,'comments':comments})
+    reviews = EpisodeReview.objects.filter(episode=episode).order_by('-created_at')
 
-
+    return render(request, 'series/serial_bolum.html', {'episode': episode, 'serie': serie,'reviews':reviews, 'seasons': seasons,'episodes': episodes,'review_form':review_form,'form':form,'comments':comments})
 
 
 
@@ -176,3 +190,59 @@ def delete_comments(request):
     comment = get_object_or_404(CommentEpisode, id=comment_id, user=request.user)
     comment.delete()
     return JsonResponse({'success': True})
+
+
+
+@login_required
+def like_comment(request,comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    liked = request.POST.get("liked") == "true"
+    if liked:
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+        comment.dislikes.remove(request.user)
+    
+    data = {"likes": comment.likes.count(), "dislikes": comment.dislikes.count()}
+    return JsonResponse(data)
+
+@login_required
+def dislike_comment(request, comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    disliked = request.POST.get("disliked") == "true"
+    
+    if disliked:
+        comment.dislikes.remove(request.user)
+    else:
+        comment.dislikes.add(request.user)
+        comment.likes.remove(request.user)
+    
+    data = {"likes": comment.likes.count(), "dislikes": comment.dislikes.count()}
+    return JsonResponse(data)
+
+@login_required
+def like_episode_comment(request,comment_id):
+    comment = CommentEpisode.objects.get(pk=comment_id)
+    liked = request.POST.get("liked") == "true"
+    if liked:
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+        comment.dislikes.remove(request.user)
+    
+    data = {"likes": comment.likes.count(), "dislikes": comment.dislikes.count()}
+    return JsonResponse(data)
+
+@login_required
+def dislike_episode_comment(request, comment_id):
+    comment = CommentEpisode.objects.get(pk=comment_id)
+    disliked = request.POST.get("disliked") == "true"
+    
+    if disliked:
+        comment.dislikes.remove(request.user)
+    else:
+        comment.dislikes.add(request.user)
+        comment.likes.remove(request.user)
+    
+    data = {"likes": comment.likes.count(), "dislikes": comment.dislikes.count()}
+    return JsonResponse(data)

@@ -22,41 +22,44 @@ class UserAdminCreationForm(forms.ModelForm):
     )
     email = forms.EmailField(required=False,label='Email')
     full_name =forms.CharField(required=False,label='Ad Soyad')
+    username =forms.CharField(required=False,label='İstifadəçi Adı')
 
     class Meta:
         model = User
         fields = [
             "email",
             "full_name",
+            "username",
             "password1",
             "password2",
         ]
 
     def clean(self):
-        # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         email = self.cleaned_data.get("email")
         full_name = self.cleaned_data.get("full_name")
+        username = self.cleaned_data.get("username")
         if password1 and password2 and password1 != password2:
             self.add_error('password1',"Sifreler eyni deyil")
-
-        
-
+        elif User.objects.filter(email=email).exists():
+            self.add_error('email',"Bu email artıq qeydiyyatdan keçib.")
+        elif User.objects.filter(username=username).exists():
+            self.add_error('username',"Bu istifadəçi adı artıq mövcuddur.")
         elif full_name=="":
-            self.add_error('full_name',"Ad bos qoyula bilmez")
-
+            self.add_error('full_name',"Ad boş qoyula bilməz")
+        elif any(char.isdigit() for char in full_name):
+            self.add_error('full_name',"Ad rəqəmdən ibarət olmamalıdır")
         elif email=="":
-            self.add_error('email',"Email bos qoyula bilmez")
-
+            self.add_error('email',"Email boş qoyula bilməz")
+        elif username=="":
+            self.add_error('username',"İstifadəçi adı boş qoyula bilməz")
         elif password1=="":
-            self.add_error('password1',"Sifre bos qoyula bilmez")
-        
+            self.add_error('password1',"Şifrə boş qoyula bilməz")       
         elif password2=="":
-            self.add_error('password2',"Sifre bos qoyula bilmez")
-
+            self.add_error('password2',"Şifrə boş qoyula bilməz")
         elif len(password1.strip()) < 6:
-            self.add_error('password1',"Sifrenin uzunlugu 6 dan boyuk olmalidir")   
+            self.add_error('password1',"Şifrənin uzunluğu 6 dan böyük olmalıdır")   
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -81,9 +84,6 @@ class UserAdminChangeForm(forms.ModelForm):
         ]
 
     def clean_password(self):
-        # Regardless of what the user provides, return the initial value.
-        # This is done here, rather than on the field, because the
-        # field does not have access to the initial value
         return self.initial["password"]
 
 
@@ -143,7 +143,6 @@ class LoginForm(forms.ModelForm):
 class RegisterForm(UserAdminCreationForm):
 
     def save(self, commit=True):
-        # Save the provided password in hashed format
         user = super(RegisterForm, self).save()
         user.set_password(self.cleaned_data.get("password1"))
         user.is_active = False

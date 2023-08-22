@@ -84,7 +84,7 @@ def show_list(request):
         
     
 
-    paginator = Paginator(movies, 2)
+    paginator = Paginator(movies, 12)
     page = request.GET.get('page', 1)
     movies_list = paginator.get_page(page)
     context = {
